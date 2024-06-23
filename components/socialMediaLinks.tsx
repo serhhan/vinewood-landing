@@ -22,7 +22,11 @@ export const SocialMediaLinks = () => {
         </a>
       </div>
       <div className="h-[40px] w-[40px]">
-        <a href="dclink" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://www.youtube.com/@vinewoodv"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <button className="h-[30px] w-[30px] hover:h-[34px] hover:w-[34px] transition-all cursor-pointer">
             <svg
               x="0px"
