@@ -14,7 +14,15 @@ export default function Home() {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       />
-
+      <div className="relative z-10 max-w-[860px]">
+        <p className="text-gray-800 dark:text-white text-center">
+          2018'den bu yana ara verdiğimiz SAMP platformunda, GTA V'deki oyuncu
+          arkadaşlarımızın teşvikleriyle yeniden aktifiz. Vinewood yöneticileri
+          olarak, sizlere yalnızca bir oyuncu kitlesi değil, gerçek bir topluluk
+          sunuyoruz. Açık sözlülük, samimiyet ve anlayışla Vinewood'u birlikte
+          geliştirip yenilikler ekleyerek daha ileriye taşıyacağız.
+        </p>
+      </div>
       <SocialMediaLinks />
     </main>
   );
