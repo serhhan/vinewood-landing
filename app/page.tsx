@@ -13,6 +13,7 @@ const App = () => {
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [lineFinished, setLineFinished] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
+  const [lastTap, setLastTap] = useState(0);
 
   const lines = [
     "Merhaba Vinewood Topluluğu!",
@@ -108,6 +109,19 @@ const App = () => {
     };
   }, []);
 
+  const handleTouch = (buttonId, event) => {
+    console.log(event);
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    if (tapLength < 500 && tapLength > 0) {
+      handleDoubleClick(buttonId);
+    } else {
+      handleSingleClick(buttonId);
+    }
+    setLastTap(currentTime);
+    event.preventDefault();
+  };
+
   const d = new Date();
   const hours = d.getHours();
   const minutes = d.getMinutes();
@@ -134,6 +148,7 @@ const App = () => {
           <button
             onClick={() => handleSingleClick(1)}
             onDoubleClick={() => handleDoubleClick(1)}
+            onTouchEnd={(e) => handleTouch(1, e)}
             className={`cursor-pointer text-white w-[70px] h-[80px] flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2 draggable-button ${
               selectedButton === 1 ? "bg-blue-500 text-white" : ""
             }`}
@@ -153,6 +168,7 @@ const App = () => {
           <button
             onClick={() => handleSingleClick(2)}
             onDoubleClick={() => handleDoubleClick(2)}
+            onTouchEnd={(e) => handleTouch(2, e)}
             className={`text-white w-[70px] h-[80px] flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2 cursor-pointer draggable-button ${
               selectedButton === 2 ? "bg-blue-500 text-white" : ""
             }`}
@@ -172,7 +188,8 @@ const App = () => {
           <button
             onClick={() => handleSingleClick(3)}
             onDoubleClick={() => handleDoubleClick(3)}
-            className={`hide-on-mobile flex cursor-pointer text-white w-[70px] h-[80px] flex-col items-center justify-center font-sans-serif text-[12px] gap-2 draggable-button ${
+            onTouchEnd={(e) => handleTouch(3, e)}
+            className={` flex cursor-pointer text-white w-[70px] h-[80px] flex-col items-center justify-center font-sans-serif text-[12px] gap-2 draggable-button ${
               selectedButton === 3 ? "bg-blue-500 text-white" : ""
             }`}
           >
@@ -269,9 +286,9 @@ const App = () => {
         </div>
         <div className="toolbar-right">
           <div className="time text-black">
-            <span className="hour"> {hours <= 9 ? 0 + hours : hours}</span>:
+            <span className="hour"> {hours <= 9 ? "0" + hours : hours}</span>:
             <span className="minutes">
-              {minutes <= 9 ? 0 + minutes : minutes}
+              {minutes <= 9 ? "0" + minutes : minutes}
             </span>
           </div>
         </div>
