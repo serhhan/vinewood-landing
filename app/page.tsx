@@ -52,7 +52,7 @@ const App = () => {
       const handler = () => {
         window.removeEventListener("keydown", handler);
         window.removeEventListener("click", handler);
-        resolve();
+        resolve("");
       };
       window.addEventListener("keydown", handler);
       window.addEventListener("click", handler);
@@ -67,7 +67,7 @@ const App = () => {
         .typeString(line + "\n\n")
         .callFunction(() => {
           setLineFinished(true);
-          resolve();
+          resolve("");
         })
         .start();
     });
