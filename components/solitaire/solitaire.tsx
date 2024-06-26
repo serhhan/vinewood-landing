@@ -519,11 +519,11 @@ export const Solitaire = ({ close }) => {
             className="start-game"
             onClick={startGame}
           >
-            <u>S</u>tart Game
+            <u>B</u>aşlat
           </button>
         )}
         <button type="button" id="js-reset" className="new-game">
-          <u>N</u>ew game
+          <u>Y</u>eni Oyun
         </button>
       </div>
       <div className="window_solitaire__content">
