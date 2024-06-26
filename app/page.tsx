@@ -4,9 +4,11 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import TypewriterComponent from "typewriter-effect";
 import Draggable from "react-draggable";
+import { Solitaire } from "@/components/solitaire/solitaire";
 
 const App = () => {
   const [showTypewriter, setShowTypewriter] = useState(false);
+  const [showSolitaire, setShowSolitaire] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [lineFinished, setLineFinished] = useState(false);
@@ -33,6 +35,8 @@ const App = () => {
       setShowTypewriter(true);
     } else if (buttonId === 2) {
       window.open("https://discord.gg/vinewood-v", "_blank");
+    } else if (buttonId === 3) {
+      setShowSolitaire(true);
     }
   };
 
@@ -164,6 +168,25 @@ const App = () => {
             <span>Discord</span>
           </button>
         </Draggable>
+        <Draggable>
+          <button
+            onClick={() => handleSingleClick(3)}
+            onDoubleClick={() => handleDoubleClick(3)}
+            className={`hide-on-mobile flex cursor-pointer text-white w-[70px] h-[80px] flex-col items-center justify-center font-sans-serif text-[12px] gap-2 draggable-button ${
+              selectedButton === 3 ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            <Image
+              src={"/solitaireIcon.png"}
+              width={100}
+              height={100}
+              alt="notepad"
+              className="h-[34px] w-[40px]"
+              onMouseDown={(e) => e.preventDefault()}
+            />
+            <span>Solitaire</span>
+          </button>
+        </Draggable>
       </div>
       {showTypewriter && (
         <Draggable>
@@ -221,6 +244,13 @@ const App = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </Draggable>
+      )}
+      {showSolitaire && (
+        <Draggable>
+          <div className="absolute top-0 left-0 h-full p-8 max-w-[1280px] w-full">
+            <Solitaire close={() => setShowSolitaire(false)} />
           </div>
         </Draggable>
       )}
