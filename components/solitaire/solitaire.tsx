@@ -522,11 +522,13 @@ export const Solitaire = ({ close }) => {
             <u>B</u>aşlat
           </button>
         )}
-        {isGameStarted && (
-          <button type="button" id="js-reset" className="new-game">
-            <u>Y</u>eni Oyun
-          </button>
-        )}
+        <button
+          type="button"
+          id="js-reset"
+          className={`new-game ${isGameStarted ? "" : "hidden"}`}
+        >
+          <u>Y</u>eni Oyun
+        </button>
       </div>
       <div className="window_solitaire__content">
         <div className="window_solitaire__content-inner">
