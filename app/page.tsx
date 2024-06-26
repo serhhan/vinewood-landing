@@ -3,12 +3,14 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import TypewriterComponent from "typewriter-effect";
+import Draggable from "react-draggable";
 
 const App = () => {
   const [showTypewriter, setShowTypewriter] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [lineFinished, setLineFinished] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
 
   const lines = [
     "Merhaba Vinewood Topluluğu!",
@@ -22,8 +24,16 @@ const App = () => {
     "Sevgilerle.",
   ];
 
-  const handleClick = () => {
-    setShowTypewriter(true);
+  const handleSingleClick = (buttonId) => {
+    setSelectedButton(buttonId === selectedButton ? null : buttonId);
+  };
+
+  const handleDoubleClick = (buttonId) => {
+    if (buttonId === 1) {
+      setShowTypewriter(true);
+    } else if (buttonId === 2) {
+      window.open("https://discord.gg/vinewood-v", "_blank");
+    }
   };
 
   const handleInput = useCallback(
@@ -72,12 +82,34 @@ const App = () => {
         .start();
     });
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const buttons = document.querySelectorAll(".draggable-button");
+      let clickedInside = false;
+      buttons.forEach((button) => {
+        if (button.contains(event.target)) {
+          clickedInside = true;
+        }
+      });
+      if (!clickedInside) {
+        setSelectedButton(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   const d = new Date();
   const hours = d.getHours();
   const minutes = d.getMinutes();
 
   return (
-    <div className="overflow-hidden whitespace-pre-wrap flex justify-center font-sans-serif">
+    <div className="relative overflow-hidden whitespace-pre-wrap flex justify-center font-sans-serif">
       <div className="fixed bottom-[2%] right-[1%]">
         <svg
           width="338"
@@ -93,90 +125,104 @@ const App = () => {
           />
         </svg>
       </div>
-      <div className="relative bottom-0 w-full h-screen flex justify-center items-center gap-8 overflow-hidden">
-        <button
-          onClick={handleClick}
-          className="cursor-pointer text-white flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2"
-        >
-          <Image
-            src={"/notepad.png"}
-            width={100}
-            height={100}
-            alt="notepad"
-            className="h-[40px] w-[40px]"
-          />
-          <span>Vinewood GTA5</span>
-        </button>
-        <button
-          onClick={() => window.open("https://discord.gg/vinewood-v", "_blank")}
-          className="text-white flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2 cursor-pointer"
-        >
-          <Image
-            src={"/discord.png"}
-            width={100}
-            height={100}
-            alt="notepad"
-            className="h-[40px] w-[40px]"
-          />
-          <span>Discord</span>
-        </button>
+      <div className="w-full h-screen overflow-hidden p-8 flex flex-col items-start gap-4">
+        <Draggable>
+          <button
+            onClick={() => handleSingleClick(1)}
+            onDoubleClick={() => handleDoubleClick(1)}
+            className={`cursor-pointer text-white flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2 draggable-button ${
+              selectedButton === 1 ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            <Image
+              src={"/notepad.png"}
+              width={100}
+              height={100}
+              alt="notepad"
+              className="h-[40px] w-[40px]"
+              onMouseDown={(e) => e.preventDefault()}
+            />
+            <span>Vinewood</span>
+          </button>
+        </Draggable>
+        <Draggable>
+          <button
+            onClick={() => handleSingleClick(2)}
+            onDoubleClick={() => handleDoubleClick(2)}
+            className={`text-white flex flex-col items-center justify-center font-sans-serif text-[12px] gap-2 cursor-pointer draggable-button ${
+              selectedButton === 2 ? "bg-blue-500 text-white" : ""
+            }`}
+          >
+            <Image
+              src={"/discord.png"}
+              width={100}
+              height={100}
+              alt="notepad"
+              className="h-[40px] w-[40px]"
+              onMouseDown={(e) => e.preventDefault()}
+            />
+            <span>Discord</span>
+          </button>
+        </Draggable>
       </div>
       {showTypewriter && (
-        <div className="absolute top-0 left-0 h-full p-8 max-w-[1280px] w-full">
-          <div className="window active">
-            <div className="window-toolbar flex items-center gap-1">
-              <Image
-                src={"/notepad.png"}
-                width={100}
-                height={100}
-                alt="notepad"
-                className="h-[18px] w-[18px]"
-              />
-              <div className="window-title">Vinewood GTA5 - Notepad</div>
-              <div className="window-buttons">
-                <div
-                  className="window-button close cursor-pointer"
-                  onClick={() => setShowTypewriter(false)}
+        <Draggable>
+          <div className="absolute top-0 left-0 h-full p-8 max-w-[1280px] w-full">
+            <div className="window active">
+              <div className="window-toolbar flex items-center gap-1">
+                <Image
+                  src={"/notepad.png"}
+                  width={100}
+                  height={100}
+                  alt="notepad"
+                  className="h-[18px] w-[18px]"
                 />
-                <div className="window-button help"></div>
+                <div className="window-title">Vinewood GTA5 - Notepad</div>
+                <div className="window-buttons">
+                  <div
+                    className="window-button close cursor-pointer"
+                    onClick={() => setShowTypewriter(false)}
+                  />
+                  <div className="window-button help"></div>
+                </div>
               </div>
-            </div>
-            <div className="window-wrapper h-full">
-              <div className="flex gap-3 text-black">
-                <span>
-                  <u>F</u>ile
-                </span>
-                <span>
-                  <u>E</u>dit
-                </span>
-                <span>
-                  <u>S</u>earch
-                </span>
-                <span>
-                  <u>H</u>elp
-                </span>
-              </div>
+              <div className="window-wrapper h-full">
+                <div className="flex gap-3 text-black">
+                  <span>
+                    <u>F</u>ile
+                  </span>
+                  <span>
+                    <u>E</u>dit
+                  </span>
+                  <span>
+                    <u>S</u>earch
+                  </span>
+                  <span>
+                    <u>H</u>elp
+                  </span>
+                </div>
 
-              <div className="window-content bg-white text-black font-sans-serif mb-2">
-                <TypewriterComponent
-                  onInit={async (typewriter) => {
-                    for (let i = 0; i < lines.length; i++) {
-                      setLineFinished(false);
-                      await handleTyping(typewriter, lines[i], i);
-                      await waitForInput();
-                      typewriter.stop();
-                    }
-                  }}
-                />
-                {waitingForInput && (
-                  <div className="animate-pulse">
-                    Devamını görmek için bir tuşa basın.
-                  </div>
-                )}
+                <div className="window-content bg-white text-black font-sans-serif mb-2">
+                  <TypewriterComponent
+                    onInit={async (typewriter) => {
+                      for (let i = 0; i < lines.length; i++) {
+                        setLineFinished(false);
+                        await handleTyping(typewriter, lines[i], i);
+                        await waitForInput();
+                        typewriter.stop();
+                      }
+                    }}
+                  />
+                  {waitingForInput && (
+                    <div className="animate-pulse">
+                      Devamını görmek için bir tuşa basın.
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </Draggable>
       )}
 
       <div id="toolbar">
@@ -193,8 +239,10 @@ const App = () => {
         </div>
         <div className="toolbar-right">
           <div className="time text-black">
-            <span className="hour">{hours}</span>:
-            <span className="minutes">{minutes}</span>
+            <span className="hour"> {hours <= 9 ? 0 + hours : hours}</span>:
+            <span className="minutes">
+              {minutes <= 9 ? 0 + minutes : minutes}
+            </span>
           </div>
         </div>
       </div>
