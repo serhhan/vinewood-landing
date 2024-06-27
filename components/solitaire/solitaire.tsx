@@ -161,7 +161,7 @@ export const Solitaire = ({ close }) => {
       event.stopPropagation();
       const { el, facingUp } = getCard(index);
       if (state.moving.capture) return;
-      releaseMove();
+      releaseMove("");
       if (facingUp) {
         const { location, pile } = getCardLocation(index);
         if (location === "deal" && pile === "deal") {
