@@ -4,11 +4,9 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import TypewriterComponent from "typewriter-effect";
 import Draggable from "react-draggable";
-import { Solitaire } from "@/components/solitaire/solitaire";
 
 const App = () => {
   const [showTypewriter, setShowTypewriter] = useState(false);
-  const [showSolitaire, setShowSolitaire] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [waitingForInput, setWaitingForInput] = useState(false);
   const [lineFinished, setLineFinished] = useState(false);
@@ -37,7 +35,7 @@ const App = () => {
     } else if (buttonId === 2) {
       window.open("https://discord.gg/vinewood-v", "_blank");
     } else if (buttonId === 3) {
-      setShowSolitaire(true);
+  
     }
   };
 
